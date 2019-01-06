@@ -187,7 +187,7 @@
 
 		if (load_apm_power_info(&apm_info)) {
 			if (apm_info.ac_state != APM_AC_ON) {
-				return bprintf("%uh %02um",
+				return bprintf("%u:%02u",
 			                       apm_info.minutes_left / 60,
 				               apm_info.minutes_left % 60);
 			} else {
