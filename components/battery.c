@@ -156,23 +156,25 @@
 	const char *
 	battery_state(const char *unused)
 	{
-		struct {
-			unsigned int state;
-			char *symbol;
-		} map[] = {
-			{ APM_AC_ON,      "+" },
-			{ APM_AC_OFF,     "-" },
-		};
 		struct apm_power_info apm_info;
-		size_t i;
 
 		if (load_apm_power_info(&apm_info)) {
-			for (i = 0; i < LEN(map); i++) {
-				if (map[i].state == apm_info.ac_state) {
-					break;
-				}
-			}
-			return (i == LEN(map)) ? "?" : map[i].symbol;
+			if (apm_info.ac_state == APM_AC_OFF && apm_info.battery_life < 25)
+				return "";
+			else if (apm_info.ac_state == APM_AC_ON && apm_info.battery_life >= 100)
+				return "";
+			else if (apm_info.ac_state == APM_AC_ON)
+				return "";
+			else if (apm_info.ac_state == APM_AC_OFF && apm_info.battery_life >= 90)
+				return "";
+			else if (apm_info.ac_state == APM_AC_OFF && apm_info.battery_life >= 75)
+				return "";
+			else if (apm_info.ac_state == APM_AC_OFF && apm_info.battery_life >= 50)
+				return "";
+			else if (apm_info.ac_state == APM_AC_OFF && apm_info.battery_life >= 25)
+				return "";
+			else
+				return "?";
 		}
 
 		return NULL;
